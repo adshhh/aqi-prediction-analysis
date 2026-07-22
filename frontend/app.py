@@ -3,7 +3,7 @@ import pandas as pd
 import requests
 
 
-BASE_URL = "http://localhost:8000"
+BASE_URL = "https://aqi-prediction-analysis-api.onrender.com"
 
 st.title("AQI Predictor")
 
