@@ -38,8 +38,26 @@ Trained on `city_day.csv`, daily pollutant and AQI readings for 26 Indian cities
 
 The deployed model is a size-constrained version of that Random Forest (`max_depth=14`,
 compressed via `joblib`) to fit free-tier hosting limits — this brought the artifact down to
-~8.4MB with negligible accuracy cost (RMSE 32.19, R² 0.903, versus the uncapped model's 32.15 /
-0.903 above).
+~8.4MB with negligible accuracy cost (RMSE 32.19, MAE 19.98, R² 0.903, versus the uncapped
+model's 32.15 / 0.903 above).
+
+### How accurate is it, in plain terms?
+
+On data the model never saw during training, its predictions are typically **within ~20 AQI
+points of the true value**, and it accounts for **about 90% of the variation** in AQI across
+cities. What the three metrics actually mean:
+
+- **MAE (Mean Absolute Error) ≈ 20** — the average gap between a prediction and reality, in
+  AQI points. India's AQI categories are roughly 50-100 points wide, so an error of ~20 usually
+  keeps a prediction in the correct category, though it can spill into a neighboring one near a
+  boundary (e.g. predicting 95 when the true value is 105).
+- **RMSE (Root Mean Squared Error) ≈ 32** — similar to MAE, but squares errors before
+  averaging, which penalizes large misses more heavily. RMSE being noticeably higher than MAE
+  means the model is usually close but occasionally further off on a subset of predictions,
+  rather than uniformly off by ~32 every time.
+- **R² (R-squared) ≈ 0.90** — the share of AQI's day-to-day variation the six pollutant inputs
+  explain, on a scale from 0 (no better than always guessing the average AQI) to 1 (perfect
+  prediction). 0.90 means the model captures most, but not all, of what drives AQI.
 
 By feature importance, **PM2.5 dominates the model's predictions at ~71%**, with CO a distant
 second at ~15% — consistent with how India's AQI calculation itself weights PM2.5 heavily.
@@ -117,7 +135,6 @@ streamlit run app.py
   days' AQI — likely relevant given how much day-to-day AQI can swing.
 - `/predict` currently requires all six pollutant values; supporting partial input (with a
   train-derived fallback for missing values) is planned but not yet built.
-- Frontend is functional but not yet visually polished (layout, styling passes pending).
 
 ## Acknowledgments
 

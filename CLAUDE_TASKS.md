@@ -5,23 +5,27 @@ disclosed accurately in the README's acknowledgments/AI-assistance section once 
 
 ## Pending
 
-- [ ] **Frontend layout — two-column redesign.** Right column: the six pollutant inputs +
+(none yet)
+
+## Done
+
+- [x] **Frontend layout — two-column redesign.** Right column: the six pollutant inputs +
   Predict button + prediction result. Left column: city picker + history line chart, with a
   text caption stating the first and last date actually shown for that city (e.g. "Showing
   data from {first_date} to {last_date}") so the chart's date range is stated explicitly
   rather than left implicit. Below both columns: right side = model scores (RMSE/MAE/R²),
-  left side = feature-importance bar chart. Use `st.columns(2)`.
+  left side = feature-importance bar chart. Used `st.columns(2)`, with a spacer-column trick
+  (`st.columns([1, 5, 1])`) for centered side margins and `gap="large"` for visible separation
+  between columns.
 
-- [ ] **Frontend styling** — increase body text font size slightly; center the "AQI
-  Predictor" title (currently left-aligned via default `st.title`).
+- [x] **Frontend styling** — increased body text font size via `.streamlit/config.toml`
+  (`baseFontSize = 18`); centered the "AQI Predictor" title via `st.title(text_alignment="center")`.
 
-- [ ] **Number input UX** — pollutant `st.number_input` fields currently show a persistent
-  `0.00` value that has to be manually deleted before typing a real number. User wants it to
-  behave like a true placeholder (empty box, greyed hint text, disappears the instant you
-  start typing) instead. Needs verification against the actual installed Streamlit version
-  (1.59.2) for whether `st.number_input` supports `value=None` + `placeholder=...` for this —
-  don't assume the API shape without checking docs/behavior at implementation time.
+- [x] **Number input UX** — pollutant `st.number_input` fields now use `value=None` +
+  `placeholder="e.g. ..."`, confirmed supported in the installed Streamlit version (1.61.1):
+  empty box with greyed hint text that disappears on typing, instead of a persistent `0.00`.
 
-## Done
-
-(none yet)
+- [x] **Plain-language model accuracy on frontend** — added a headline sentence under the
+  model-scores panel translating MAE/R² into plain terms ("predictions are typically within
+  X AQI points... explains about Y% of the variation"), plus hover tooltips (`help=`) on each
+  metric (MAE, RMSE, R²) explaining what it means in simple language.
