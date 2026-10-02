@@ -1,6 +1,6 @@
-from fastapi import FastAPI, HTTPException
 import joblib
 import pandas as pd
+from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
 app = FastAPI()
@@ -15,9 +15,9 @@ scaler = joblib.load('scaler.joblib')
 df = pd.read_csv('city_day.csv')
 
 model_features = ['PM2.5', 'PM10', 'SO2', 'CO', 'NO2', 'O3']
-score_RMSE = 32.19
-score_MAE = 19.98
-score_R_square = 0.903
+score_RMSE = 42.00
+score_MAE = 22.00
+score_R_square = 0.904
 
 class pollutants(BaseModel):
     pm2_5: float
