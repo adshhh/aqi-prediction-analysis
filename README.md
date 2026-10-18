@@ -159,7 +159,10 @@ after the fact:
   performance on cities it has never seen hasn't been measured — it likely relies partly on
   city-specific patterns.
 - No cross-validation or systematic hyperparameter tuning — a single 80/20 split and
-  largely default hyperparameters were used, given project time constraints.
+  largely default hyperparameters were used, given project time constraints. Because the
+  model choice (Random Forest vs. linear models) and `max_depth=14` were picked by comparing
+  test-set scores, the reported metrics may be slightly optimistic. A cleaner approach would
+  select the model with cross-validation on the training set and use the test set only once.
 - Only 6 of the dataset's 13 available pollutants are used as features.
 - Models don't incorporate temperature, humidity, wind, season, or lag effects from prior
   days' AQI — likely relevant given how much day-to-day AQI can swing.
